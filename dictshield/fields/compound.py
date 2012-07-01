@@ -45,8 +45,7 @@ class ListField(BaseField):
             if docs:
                 kwargs.setdefault('primary_embedded', docs[0])
         self.fields = fields
-        kwargs.setdefault('default', list)
-
+ 
         self.primary_embedded = kwargs.pop('primary_embedded', None)
         super(ListField, self).__init__(**kwargs)
 
@@ -59,10 +58,10 @@ class ListField(BaseField):
             embedded_fields.remove(self.primary_embedded)
             embedded_fields.insert(0, self.primary_embedded)
 
-        if value is None:
-            value = []  # have to use a list
+        if not value:
+            value = None  # have to use a list
 
-        if embedded_fields:
+        if embedded_fields and value:
             list_of_docs = list()
             for doc in value:
                 if isinstance(doc, dict):
