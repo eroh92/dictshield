@@ -415,13 +415,14 @@ class FloatField(NumberField):
                                          *args, **kwargs)
 
 
-class DecimalField(BaseField, JsonNumberMixin):
+class DecimalField(NumberField):
     """A fixed-point decimal number field.
     """
 
-    def __init__(self, min_value=None, max_value=None, **kwargs):
-        self.min_value, self.max_value = min_value, max_value
-        super(DecimalField, self).__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super(DecimalField, self).__init__(number_class=decimal.Decimal,
+                                           number_type='Decimal',
+                                           *args, **kwargs)
 
     def for_python(self, value):
         if not isinstance(value, basestring):
