@@ -516,9 +516,10 @@ class BooleanField(BaseField):
     boolean-like value, such as 'y', 'n', 'yes', 'no', to a native boolean.
     """
 
-    def __init__(self, false_value=None, true_value=None):
+    def __init__(self, false_value=None, true_value=None, **kwargs):
         self.false_value = false_value
         self.true_value = true_value
+        super(BooleanField, self).__init__(**kwargs)
 
     def __set__(self, instance, value):
         if value != None and self.false_value and self.true_value:
