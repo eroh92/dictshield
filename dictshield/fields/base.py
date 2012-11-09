@@ -511,7 +511,23 @@ class SHA1Field(BaseField, JsonHashMixin):
 
 class BooleanField(BaseField):
     """A boolean field type.
+
+    `true_value` and `false_value` are to be used to convert
+    boolean-like value, such as 'y', 'n', 'yes', 'no', to a native boolean.
     """
+
+    def __init__(self, false_value=None, true_value=None, **kwargs):
+        self.false_value = false_value
+        self.true_value = true_value
+        super(BooleanField, self).__init__(**kwargs)
+
+    def __set__(self, instance, value):
+        if value != None and self.false_value and self.true_value:
+            if value == self.false_value:
+                value = False
+            elif value == self.true_value:
+                value = True
+        instance._data[self.field_name] = value
 
     def _jsonschema_type(self):
         return 'boolean'
